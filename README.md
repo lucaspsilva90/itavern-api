@@ -16,10 +16,12 @@
     * [React Native](https://reactnative.dev/)
 
 # Instalação
+#### Na raiz do projeto rodar o comando:
 ```bash
 $ npm install
 ```
 # Rodando
+#### Na raiz do projeto rodar o comando:
 ```bash
 $ npm start
 ```
