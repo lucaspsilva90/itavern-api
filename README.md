@@ -26,8 +26,8 @@ $ npm install
 $ npm start
 ```
 # Equipe
-@lucaspsilva90
-@AndradeMatheus
-@derickbenites
-@JosePaes
-@lmioki
+* @lucaspsilva90
+* @AndradeMatheus
+* @derickbenites
+* @JosePaes
+* @lmioki
