@@ -14,14 +14,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
+    user_type:{
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1,
+      validate: {
+        notNull: true
+      }
+    },
     name: {
       type: DataTypes.STRING,
       allowNull:false,
       validate: {
-        isAlpha: {
-          args: true,
-          msg: "Desculpe, apenas letras são permitidas neste campo."
-        },
         notEmpty: {
           args: true,
           msg: "Por favor, digite seu nome."
@@ -45,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: {
           args: true,
           msg: "O e-mail digitado não é válido. Por favor, forneça um e-mail válido (usuario@domínio.com)."
+        },
+        notNull: {
+          args: true,
+          msg: "Você precisa fornecer um e-mail válido."
         }
       }
     },
@@ -61,16 +69,17 @@ module.exports = (sequelize, DataTypes) => {
     nickname: {
       type:DataTypes.STRING,
       allowNull: false,
-      validate:{
-        isAlphanumeric:{
-          args: true,
-          msg: "Desculpe, o apelido não deve conter caracteres especiais. Utilize apenas letras e números."
-        },
+      validate: {
         notNull: {
           args: true,
           msg: "Por favor, digite um apelido válido."
         }
       }
+    },
+    img_url:{
+      type:DataTypes.STRING,
+      allowNull:false,
+      defaultValue: "../img/imagemPadrao.jpeg",
     },
     user_activated: DataTypes.INTEGER,
     adress_code: DataTypes.INTEGER,

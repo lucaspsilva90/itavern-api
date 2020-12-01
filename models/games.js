@@ -15,7 +15,20 @@ module.exports = (sequelize, DataTypes) => {
   };
   Games.init({
     game_id: DataTypes.INTEGER,
-    game_name: DataTypes.STRING
+    game_name: {
+      type:DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          args: true,
+          msg: "Por favor, forneça o nome do jogo."
+        },
+        isAlphanumeric: {
+          args: true,
+          msg: "Por favor utilize apenas letras e números."
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Games',
