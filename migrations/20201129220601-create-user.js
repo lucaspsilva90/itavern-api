@@ -40,10 +40,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      adress_code: {
+      address_code: {
         type: Sequelize.INTEGER
       },
-      adress: {
+      address: {
         type: Sequelize.STRING
       },
       number: {

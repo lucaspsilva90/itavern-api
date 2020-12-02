@@ -14,8 +14,7 @@ module.exports = {
     },
 
     searchByParam: async (req, res) => {
-        const param  = req.body;
-        
+        const param = req.body;
         try {
             const result = await User.findAll({ where: param });
             if (result.length == 0) {
@@ -24,20 +23,26 @@ module.exports = {
                 return res.status(200).send(result);
             }
         } catch (error) {
-            if(error.name == "SequelizeDatabaseError"){
-                return res.status(400).send({message: "Verifique se o parâmetro digitado é válido."})
+            if (error.name == "SequelizeDatabaseError") {
+                return res.status(400).send({ message: "Verifique se o parâmetro digitado é válido." })
             }
             return res.status(400).send(error.message);
         }
     },
 
     store: async (req, res) => {
+        const userData = req.body;
 
-        const user = req.body;
+        const user = await User.findOne({ where: { email: userData.email } })
+
+        if (user) {
+            return res.status(400).send({ message: "Este e-mail já está sendo utilizado, por favor utilize outro e-mail válido." })
+        }
+
+        req.body.password = brcrypt.hashSync(req.body.password, 12);
         userService.setBirthDateToISOString(user, user.birthdate);
-
         try {
-            await User.create(user);
+            await User.create(userData);
             return res.status(201).send({ user });
         } catch (error) {
             return res.status(400).send(error.message);

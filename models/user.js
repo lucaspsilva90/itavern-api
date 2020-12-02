@@ -81,9 +81,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull:false,
       defaultValue: "../img/imagemPadrao.jpeg",
     },
-    user_activated: DataTypes.INTEGER,
-    adress_code: DataTypes.INTEGER,
-    adress: DataTypes.STRING,
+    user_activated:{
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    address_code: DataTypes.INTEGER,
+    address: DataTypes.STRING,
     number: DataTypes.STRING,
     complement: DataTypes.STRING,
     district: DataTypes.STRING,
