@@ -1,28 +1,40 @@
 const { User } = require('../models');
 const user = require('../models/user');
+const brcrypt = require('bcrypt');
+const userService = require('../utils/userService');
+const { Op } = require('sequelize');
+const e = require('express');
 
 module.exports = {
 
-
     list: async (req, res) => {
-        const resultado = await User.findAll();
+        const result = await User.findAll({ attributes: { exclude: ['password'] } });
 
-        res.status(200).send(resultado);
+        res.status(200).send(result);
     },
 
     searchByParam: async (req, res) => {
-
+        const param  = req.body;
+        
+        try {
+            const result = await User.findAll({ where: param });
+            if (result.length == 0) {
+                return res.status(400).send({ message: "Não foi encontrado nenhum usuario com o parâmetro fornecido" });
+            } else {
+                return res.status(200).send(result);
+            }
+        } catch (error) {
+            if(error.name == "SequelizeDatabaseError"){
+                return res.status(400).send({message: "Verifique se o parâmetro digitado é válido."})
+            }
+            return res.status(400).send(error.message);
+        }
     },
 
     store: async (req, res) => {
 
-        function setBirthDateToISOString(user, stringDate) {
-            user.birthdate = new Date(stringDate).toISOString();
-            return user;
-        }
-
         const user = req.body;
-        setBirthDateToISOString(user, user.birthdate);
+        userService.setBirthDateToISOString(user, user.birthdate);
 
         try {
             await User.create(user);
@@ -68,8 +80,5 @@ module.exports = {
         } catch (error) {
             return res.status(400).send(error.message);
         }
-
-
-
     }
 }
