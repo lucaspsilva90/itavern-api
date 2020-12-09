@@ -15,8 +15,11 @@ module.exports = {
 
     searchByParam: async (req, res) => {
         const param = req.body;
+        const searchValues = Object.values(param);
+        console.log(searchValues[1]);
+ 
         try {
-            const result = await User.findAll({ where: param });
+            const result = await User.findAll({ where: param, [Op.like]:searchValues });
             if (result.length == 0) {
                 return res.status(400).send({ message: "Não foi encontrado nenhum usuario com o parâmetro fornecido" });
             } else {
@@ -71,6 +74,7 @@ module.exports = {
         const { id } = req.params;
         const changes = req.body;
 
+        changes.password = brcrypt.hashSync(req.body.password, 12);
 
         const user = await User.findByPk(id);
 
