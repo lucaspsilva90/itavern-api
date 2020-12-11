@@ -3,7 +3,6 @@ const user = require('../models/user');
 const brcrypt = require('bcrypt');
 const userService = require('../utils/userService');
 const { Op } = require('sequelize');
-const e = require('express');
 
 module.exports = {
 
@@ -13,23 +12,35 @@ module.exports = {
         res.status(200).send(result);
     },
 
-    searchByParam: async (req, res) => {
-        const param = req.body;
-        const searchValues = Object.values(param);
-        console.log(searchValues[1]);
- 
+    searchActivatedUsersByParam: async (req, res) => {
+        const { name, email } = req.query;
+        console.log(name);
+
+        if (!name && !email) {
+            return res.status(400).send({ message: "Por favor forneça um nome ou email válido" });
+        }
+
         try {
-            const result = await User.findAll({ where: param, [Op.like]:searchValues });
-            if (result.length == 0) {
-                return res.status(400).send({ message: "Não foi encontrado nenhum usuario com o parâmetro fornecido" });
-            } else {
-                return res.status(200).send(result);
+
+            if (name) {
+                const result = await User.findAll({ where: { [Op.and]: [{ name: { [Op.like]: `%${name}%` } }, { user_activated: 1 }] } });
+                if (result.length == 0) {
+                    return res.status(400).send({ message: "Não foi encontrado nenhum usuario com o parâmetro fornecido" });
+                } else {
+                    return res.status(200).send(result);
+                }
+            }
+
+            if (email) {
+                const result = await User.findAll({ where: { [Op.and]: [{ email: { [Op.like]: `%${email}%` } }, { user_activated: 1 }] } });
+                if (result.length == 0) {
+                    return res.status(400).send({ message: "Não foi encontrado nenhum usuario com o parâmetro fornecido" });
+                } else {
+                    return res.status(200).send(result);
+                }
             }
         } catch (error) {
-            if (error.name == "SequelizeDatabaseError") {
-                return res.status(400).send({ message: "Verifique se o parâmetro digitado é válido." })
-            }
-            return res.status(400).send(error.message);
+            return res.status(400).send(error.message)
         }
     },
 
@@ -43,10 +54,10 @@ module.exports = {
         }
 
         req.body.password = brcrypt.hashSync(req.body.password, 12);
-        userService.setBirthDateToISOString(user, user.birthdate);
+        userService.setBirthDateToISOString(userData, userData.birthdate);
         try {
             await User.create(userData);
-            return res.status(201).send({ user });
+            return res.status(201).send({ userData });
         } catch (error) {
             return res.status(400).send(error.message);
         }
@@ -74,12 +85,17 @@ module.exports = {
         const { id } = req.params;
         const changes = req.body;
 
-        changes.password = brcrypt.hashSync(req.body.password, 12);
+        if (changes.password) {
+            changes.password = brcrypt.hashSync(req.body.password, 12);
+        }
 
-        const user = await User.findByPk(id);
-
-        if (!user) {
-            return res.status(400).send({ message: `Usuário de id ${id} não foi encontrado.` });
+        try {
+            const user = await User.findByPk(id);
+            if (!user) {
+                return res.status(400).send({ message: `Usuário de id ${id} não foi encontrado.` });
+            }
+        } catch (error) {
+            return res.send(error.message)
         }
 
         try {
