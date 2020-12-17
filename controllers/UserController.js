@@ -46,15 +46,25 @@ module.exports = {
 
     store: async (req, res) => {
         const userData = req.body;
+        const userParametersValidation = userService.objectParametersValidation(userData);
 
-        const user = await User.findOne({ where: { email: userData.email } })
-
-        if (user) {
-            return res.status(400).send({ message: "Este e-mail já está sendo utilizado, por favor utilize outro e-mail válido." })
+        if(userParametersValidation.status){
+            return res.status(404).send({message:`Por favor, forneça os parâmetros necessários corretamente. O(s) parâmetro(s) ${userParametersValidation.errorFields.toString()} não existe/existem`});
         }
+    
+        try{
+            const user = await User.findOne({ where: { email: userData.email } });
+            if (user) {
+                return res.status(400).send({ message: "Este e-mail já está sendo utilizado, por favor utilize outro e-mail válido." })
+            }
+        }catch(error){
+            return res.status(400).send({message:error.message});
+        }
+
 
         req.body.password = brcrypt.hashSync(req.body.password, 12);
         userService.setBirthDateToISOString(userData, userData.birthdate);
+
         try {
             await User.create(userData);
             return res.status(201).send({ userData });
