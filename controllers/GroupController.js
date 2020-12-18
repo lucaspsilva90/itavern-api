@@ -3,33 +3,38 @@ const { Group, Games } = require('../models');
 
 module.exports = {
 
-    store: async (req,res) => {
+    store: async (req, res) => {
         const group = req.body;
-        try{
+        try {
             const result = await Group.create(group);
-            return res.status(201).send({message:`O grupo ${group.name} foi criado com sucesso.`})
-        }catch(error){
-            return res.status(400).send({message:error.message});
+            return res.status(201).send({ message: `O grupo ${group.name} foi criado com sucesso.` })
+        } catch (error) {
+            return res.status(400).send({ message: error.message });
         }
     },
-    list: async (req,res) => {
+    list: async (req, res) => {
 
-        try{
-            const result = await Group.findAll({attributes:{exclude:['updatedAt', 'game_id']},include:[{
-                model:Games,
-                as:"groupGame",
-                attributes:{exclude:['id','createdAt', 'updatedAt']}
-            }]});
+        try {
+            const result = await Group.findAll({
+                attributes: { exclude: ['updatedAt', 'game_id'] },
+                include: [{
+                    model: Games,
+                    as: "groupGame",
+                    attributes: {
+                        exclude: ['id', 'createdAt', 'updatedAt']
+                    }
+                }]
+            });
             return res.status(200).send(result)
-        }catch(error){
-            res.status(400).send({message:error.message});
+        } catch (error) {
+            res.status(400).send({ message: error.message });
         }
 
     },
-    update: async (req,res) => {
+    update: async (req, res) => {
 
     },
-    delete: async (req,res) => {
+    delete: async (req, res) => {
 
     }
 
