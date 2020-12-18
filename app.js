@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var usersRouter = require('./routes/users');
 var gameRouter = require('./routes/games');
+var groupRouter = require('./routes/groups');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
 app.use('/games', gameRouter);
+app.use('/group' , groupRouter);
 app.all('*', (req, res) => {
     res.status(404).send({ message: "Endpoint não encontrado." });
 })
