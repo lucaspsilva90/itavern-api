@@ -48,17 +48,19 @@ module.exports = {
         const userData = req.body;
         const userParametersValidation = userService.objectParametersValidation(userData);
 
-        if(userParametersValidation.status){
-            return res.status(404).send({message:`Por favor, forneça os parâmetros necessários corretamente. O(s) parâmetro(s) ${userParametersValidation.errorFields.toString()} não existe/existem`});
+        if (userParametersValidation.status) {
+            const validationErrors = userParametersValidation.errorFields.toString();
+            const singularPhrase = `O campo ${validationErrors}, não existe. Por favor, verifique se o parâmetro fornecido está correto.`
+            const pluralPhrase = `Os campos: ${validationErrors}, não existem. Por favor, verifique se os parâmetros fornecidos estão corretos.`
+            return res.status(400).send({ message: `${userParametersValidation.errorFields.length > 1 ? pluralPhrase : singularPhrase}` });
         }
-    
-        try{
+        try {
             const user = await User.findOne({ where: { email: userData.email } });
             if (user) {
                 return res.status(400).send({ message: "Este e-mail já está sendo utilizado, por favor utilize outro e-mail válido." })
             }
-        }catch(error){
-            return res.status(400).send({message:error.message});
+        } catch (error) {
+            return res.status(400).send({ message: error.message });
         }
 
 
@@ -94,6 +96,14 @@ module.exports = {
 
         const { id } = req.params;
         const changes = req.body;
+        const userParametersValidation = userService.objectParametersValidation(changes);
+
+        if (userParametersValidation.status) {
+            const validationErrors = userParametersValidation.errorFields.toString();
+            const singularPhrase = `O campo ${validationErrors}, não existe. Por favor, verifique se o parâmetro fornecido está correto.`
+            const pluralPhrase = `Os campos: ${validationErrors}, não existem. Por favor, verifique se os parâmetros fornecidos estão corretos.`
+            return res.status(400).send({ message: `${userParametersValidation.errorFields.length > 1 ? pluralPhrase : singularPhrase}` });
+        }
 
         if (changes.password) {
             changes.password = brcrypt.hashSync(req.body.password, 12);
