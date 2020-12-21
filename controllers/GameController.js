@@ -1,4 +1,4 @@
-const { Games } = require('../models');
+const { Games, userGroup } = require('../models');
 module.exports = {
     store: async (req, res) => {
         const { name } = req.body
@@ -60,5 +60,10 @@ module.exports = {
         } catch (error) {
             return res.status(400).send({ message: error.message });
         }
+    },
+    listUserGroups: async (req,res) =>{
+        result = await userGroup.findAll();
+
+        return res.send(result);
     }
 }

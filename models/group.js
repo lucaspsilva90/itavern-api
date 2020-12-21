@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'game_id',
         as: 'groupGame'
       })
+      Group.belongsToMany(models.User, { through: models.userGroup, as:"groupUsers"});
     }
   };
   Group.init({

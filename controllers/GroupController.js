@@ -1,4 +1,5 @@
-const { Group, Games } = require('../models');
+const { Group, Games, User, userGroup } = require('../models');
+const UserController = require('./UserController');
 
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
             return res.status(400).send({ message: error.message });
         }
     },
-    list: async (req, res) => {
+    listAllGroups: async (req, res) => {
 
         try {
             const result = await Group.findAll({
@@ -23,7 +24,13 @@ module.exports = {
                     attributes: {
                         exclude: ['id', 'createdAt', 'updatedAt']
                     }
-                }]
+                },
+                {
+                    model: User,
+                    as: "groupUsers",
+                    attributes: ['name', 'nickname', 'img_url']
+                }
+                ]
             });
             return res.status(200).send(result)
         } catch (error) {
@@ -35,6 +42,33 @@ module.exports = {
 
     },
     delete: async (req, res) => {
+
+    },
+
+    joinGroup: async (req, res) => {
+        data = req.body
+
+        try {
+            const user = await User.findOne({ where: { id: data.userId } })
+            if (!user) {
+                return res.status(404).send({ message: `Não foi encontrado nenhum usuário com o id fornecido` });
+            }
+
+            const group = await Group.findOne({ where: { id: data.groupId } })
+            if (!group) {
+                return res.status(404).send({ message: `Não foi encontrado nenhum grupo com o id fornecido` })
+            }
+
+            const verify = await userGroup.findOne({ where: { userId: data.userId } });
+            if (verify) {
+                return res.status(400).send({ message: `O usuário ${user.nickname} já faz parte do grupo ${group.name}` });
+            }
+
+            const result = await userGroup.create(data);
+            return res.send({ message: `O usuario ${user.nickname} foi adicionado com sucesso.` })
+        } catch (error) {
+            return res.status(400).send({ message: error.message });
+        }
 
     }
 
