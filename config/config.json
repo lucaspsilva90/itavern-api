@@ -1,11 +1,11 @@
-
 {
   "development": {
-    "username": "admin",
-    "password": "lucas123",
+    "username": "",
+    "password": "lucasqwe2232",
     "database": "itavern",
-    "host": "104.196.63.85",
-    "dialect": "mysql"
+    "port": 5432,
+    "host": "localhost",
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",

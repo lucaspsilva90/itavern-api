@@ -6,10 +6,10 @@ module.exports = {
     },
     objectParametersValidation: (user) => {
         const errorFields = []
-        const validation = Object.keys(user).map(function (key, index) {
+        const validation = Object.keys(user).map(function (key) {
             const parameters = ["name", "birthdate", "email", "password", "nickname", "address_code", "address", "number", "complement", "district", "city", "state"];
  
-            if (key != parameters[index]) {
+            if (!parameters.includes(key)) {
                 errorFields.push(key);
                 return false
             } else {
