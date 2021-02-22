@@ -1,21 +1,12 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Games extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      Games.hasMany(models.Group, {
-        foreignKey: 'game_id',
-        as: 'groups'
-      })
+      Games.hasMany(models.Group);
     }
-  };
+  }
   Games.init({
     name: {
       type: DataTypes.STRING,
@@ -23,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           args: true,
-          msg: "Por favor, forneça o nome do jogo."
-        }
-      }
-    }
+          msg: 'Por favor, forneça o nome do jogo.',
+        },
+      },
+    },
   }, {
     sequelize,
     modelName: 'Games',

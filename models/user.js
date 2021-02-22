@@ -1,97 +1,117 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      User.belongsToMany(models.Group, {through: models.userGroup, as:'groupUsers'});
+      User.belongsToMany(models.Group, { through: 'user_group', foreignKey: 'userId' });
     }
-  };
+  }
   User.init({
-    user_type:{
+    user_type: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 1,
       validate: {
-        notNull: true
-      }
+        notNull: true,
+      },
     },
     name: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
         notEmpty: {
           args: true,
-          msg: "Por favor, digite seu nome."
-        }
-      }
+          msg: 'Por favor, digite seu nome.',
+        },
+      },
     },
     birthdate: {
       type: DataTypes.DATEONLY,
-      allowNull:false,
-      validate:{
-        isDate:{
+      allowNull: false,
+      validate: {
+        isDate: {
           args: true,
-          msg: "Por favor, digite uma data válida."
-        }
-      }
+          msg: 'Por favor, digite uma data válida.',
+        },
+      },
     },
     email: {
       type: DataTypes.STRING,
-      allowNull:false,
+      allowNull: false,
       validate: {
         isEmail: {
           args: true,
-          msg: "O e-mail digitado não é válido. Por favor, forneça um e-mail válido (usuario@domínio.com)."
+          msg: 'O e-mail digitado não é válido. Por favor, forneça um e-mail válido (usuario@domínio.com).',
         },
         notNull: {
           args: true,
-          msg: "Você precisa fornecer um e-mail válido."
-        }
-      }
+          msg: 'Você precisa fornecer um e-mail válido.',
+        },
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate:{
+      validate: {
         notNull: {
           args: true,
-          msg: "Por favor, digite uma senha válida."
-        }
-      }
+          msg: 'Por favor, digite uma senha válida.'
+        },
+      },
     },
     nickname: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notNull: {
           args: true,
-          msg: "Por favor, digite um apelido válido."
-        }
-      }
+          msg: 'Por favor, digite um apelido válido.',
+        },
+      },
     },
-    img_url:{
-      type:DataTypes.STRING,
-      allowNull:false,
-      defaultValue: "../img/imagemPadrao.jpeg",
+    img_url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: '../img/imagemPadrao.jpeg',
     },
-    user_activated:{
+    user_activated: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
     },
-    address_code: DataTypes.INTEGER,
-    address: DataTypes.STRING,
+    address_code: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Por favor digite um cep.',
+        },
+        notNull: {
+          args: true,
+          msg: 'Por favor digite um cep.',
+        },
+      },
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Por favor digite um endereço.',
+        },
+        notNull: {
+          args: true,
+          msg: 'Por favor digite um endereço.',
+        },
+      },
+    },
     number: DataTypes.STRING,
     complement: DataTypes.STRING,
     district: DataTypes.STRING,
     city: DataTypes.STRING,
-    state: DataTypes.STRING
+    state: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',

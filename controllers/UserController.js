@@ -35,7 +35,7 @@ module.exports = {
         return res.status(200).send(result);
       }
     } catch (error) {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     }
   },
 
@@ -55,7 +55,7 @@ module.exports = {
         return res.status(400).send({ message: 'Este e-mail já está sendo utilizado, por favor utilize outro e-mail válido.' });
       }
     } catch (error) {
-      return res.status(400).send({ message: error.message });
+      return res.status(400).json({ message: error.message });
     }
 
     req.body.password = await brcrypt.hash(req.body.password, 12);
@@ -63,11 +63,12 @@ module.exports = {
 
     try {
       await User.create(userData);
-      return res.status(201).send({ userData });
+      return res.status(201).send(userData);
     } catch (error) {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     }
   },
+
   delete: async (req, res) => {
     const { id } = req.params;
     const user = await User.findByPk(id);
@@ -80,7 +81,7 @@ module.exports = {
       await User.destroy({ where: { id } });
       return res.status(200).send(user);
     } catch (error) {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     }
   },
 
@@ -106,14 +107,15 @@ module.exports = {
         return res.status(400).send({ message: `Usuário de id ${id} não foi encontrado.` });
       }
     } catch (error) {
-      return res.send(error.message);
+      return res.json({ message: error.message });
     }
 
     try {
       await User.update(changes, { where: { id } });
       return res.status(200).send({ message: `O usuário de id: ${id} teve as seguintes alterações:`, changes });
     } catch (error) {
-      return res.status(400).send(error.message);
+      return res.status(400).json({ message: error.message });
     }
   },
+
 };
