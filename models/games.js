@@ -4,7 +4,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Games extends Model {
     static associate(models) {
-      Games.hasMany(models.Group, {foreignKey: 'game_id'});
+      Games.hasMany(models.Group, { foreignKey: 'game_id' });
     }
   }
   Games.init({

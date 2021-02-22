@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
       Group.belongsToMany(models.User, { through: models.userGroup, foreignKey: 'groupId' });
-      Group.belongsTo(models.Games, { foreignKey: 'id' });
+      Group.belongsTo(models.Games, { foreignKey: 'game_id' });
     }
   }
   Group.init({
