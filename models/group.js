@@ -4,7 +4,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
-      Group.belongsToMany(models.User, { through: 'user_groups', foreignKey: 'userId' });
+      Group.belongsToMany(models.User, { through: models.userGroup, foreignKey: 'groupId' });
       Group.belongsTo(models.Games, { foreignKey: 'id' });
     }
   }
