@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notNull: {
           args: true,
-          msg: 'Por favor, digite uma senha válida.'
+          msg: 'Por favor, digite uma senha válida.',
         },
       },
     },

@@ -4,8 +4,7 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
   class userGroup extends Model {
-    static associate(models) {
-    }
+
   }
   userGroup.init({
     userId: {
