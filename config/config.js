@@ -5,7 +5,6 @@ module.exports = {
     database: process.env.DB_DATABASE_NAME_DEV,
     host: process.env.DB_DATABASE_HOST_DEV,
     dialect: process.env.DB_DATABASE_DIALECT_DEV,
-    port: 5432,
   },
   test: {
     username: 'database_test',
@@ -20,6 +19,5 @@ module.exports = {
     database: process.env.DB_DATABASE_NAME_DEV,
     host: process.env.DB_DATABASE_HOST_DEV,
     dialect: process.env.DB_DATABASE_DIALECT_DEV,
-    port: 5432,
   },
 };
