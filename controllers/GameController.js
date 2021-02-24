@@ -59,9 +59,4 @@ module.exports = {
       return res.status(400).send({ message: error.message });
     }
   },
-  listUserGroups: async (req, res) => {
-    const result = await userGroup.findAll();
-
-    return res.send(result);
-  },
 };

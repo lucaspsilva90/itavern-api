@@ -44,7 +44,6 @@ module.exports = {
     const msg = 'lucas';
     return res.send(`Falta implementação ${msg}`);
   },
-
   joinGroup: async (req, res) => {
     const { userId, groupId } = req.body;
     try {

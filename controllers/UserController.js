@@ -20,7 +20,7 @@ module.exports = {
 
     try {
       if (name) {
-        const result = await User.findAll({ where: { [Op.and]: [{ name: { [Op.like]: `%${name}%` } }, { user_activated: 1 }] } });
+        const result = await User.findAll({ where: { [Op.and]: [{ name: { [Op.iLike]: `%${name}%` } }, { user_activated: 1 }] } });
         if (result.length === 0) {
           return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
         }
@@ -28,7 +28,7 @@ module.exports = {
       }
 
       if (email) {
-        const result = await User.findAll({ where: { [Op.and]: [{ email: { [Op.like]: `%${email}%` } }, { user_activated: 1 }] } });
+        const result = await User.findAll({ where: { [Op.and]: [{ email: { [Op.iLike]: `%${email}%` } }, { user_activated: 1 }] } });
         if (result.length === 0) {
           return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
         }
