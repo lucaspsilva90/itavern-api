@@ -12,9 +12,24 @@ module.exports = (sequelize, DataTypes) => {
     owner_user: DataTypes.INTEGER,
     master_id: DataTypes.INTEGER,
     name: DataTypes.STRING,
-    game_id: DataTypes.INTEGER,
-    max_players: DataTypes.INTEGER,
-    chat_integration: DataTypes.JSON,
+    game_id: {
+      type: DataTypes.INTEGER,
+      validate:{
+        isInt: true,
+      },
+    },
+    max_players: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+        min: 2,
+        max: 15,
+      },
+    },
+    chat_integration: {
+      type: DataTypes.JSON,
+      defaultValue: {},
+    },
   }, {
     sequelize,
     modelName: 'Group',

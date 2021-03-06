@@ -2,12 +2,31 @@ const {
   Group, Games, User, userGroup,
 } = require('../models');
 
+const groupService = require('../utils/groupService');
+
 module.exports = {
 
   store: async (req, res) => {
     const group = req.body;
+    const { owner_user } = req.body;
+    group.master_id = owner_user;
+
     try {
+      const user = await User.findByPk(owner_user);
+
+      if (!user) {
+        return res.status(401).json({ message: `Não foi encontrado nenhum usuário para ser o dono do grupo com id ${owner_user}` });
+      }
+
+      const groupName = await Group.findOne({ where: { name: group.name } });
+      if (groupName) {
+        return res.status(401).json({ message: `Já existe um grupo com o nome ${group.name}, por favor escolha outro nome.` });
+      }
+
       await Group.create(group);
+      const createdGroup = await Group.findOne({ where: { name: group.name } });
+      const groupId = createdGroup.id;
+      await userGroup.create({ userId: owner_user, groupId, status: 'active' });
       return res.status(201).send({ message: `O grupo ${group.name} foi criado com sucesso.` });
     } catch (error) {
       return res.status(400).send({ message: error.message });
@@ -36,13 +55,48 @@ module.exports = {
       return res.status(400).send({ message: error.message });
     }
   },
-  update: async (req, res) => {
-    const msg = 'lucas';
-    return res.send(`Falta implementação ${msg}`);
+  updateById: async (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    const userParametersValidation = groupService.objectParametersValidation(changes);
+
+    if (userParametersValidation.status) {
+      const validationErrors = userParametersValidation.errorFields.toString();
+      const singularPhrase = `O campo ${validationErrors}, não existe. Por favor, verifique se o parâmetro fornecido está correto.`;
+      const pluralPhrase = `Os campos: ${validationErrors}, não existem. Por favor, verifique se os parâmetros fornecidos estão corretos.`;
+      return res.status(400).send({ message: `${userParametersValidation.errorFields.length > 1 ? pluralPhrase : singularPhrase}` });
+    }
+
+    try {
+      const group = await Group.findByPk(id);
+      if (!group) {
+        return res.status(400).send({ message: `O grupo de id ${id} não foi encontrado.` });
+      }
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+
+    try {
+      await Group.update(changes, { where: { id } });
+      return res.status(200).send({ message: `O grupo de id: ${id} teve as seguintes alterações:`, changes });
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
   },
   delete: async (req, res) => {
-    const msg = 'lucas';
-    return res.send(`Falta implementação ${msg}`);
+    const { id } = req.params;
+    const group = await Group.findByPk(id);
+
+    if (!group) {
+      return res.status(400).send({ message: `Grupo de id: ${id} não foi encontrado.` });
+    }
+
+    try {
+      await Group.destroy({ where: { id } });
+      return res.status(200).send(group);
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
   },
   joinGroup: async (req, res) => {
     const { userId, groupId } = req.body;
