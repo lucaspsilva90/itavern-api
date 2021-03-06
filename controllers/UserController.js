@@ -6,21 +6,24 @@ const userService = require('../utils/userService');
 module.exports = {
 
   list: async (req, res) => {
-    const result = await User.findAll({ attributes: { exclude: ['password'] } });
-
-    res.status(200).send(result);
+    try {
+      const result = await User.findAll({ attributes: { exclude: ['password'] } });
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(400).json({ message: error });
+    }
   },
 
   searchActivatedUsersByParam: async (req, res) => {
-    const { name, email } = req.query;
+    const { nickname, email } = req.query;
 
-    if (!name && !email) {
+    if (!nickname && !email) {
       return res.status(400).send({ message: 'Por favor forneça um nome ou email válido' });
     }
 
     try {
-      if (name) {
-        const result = await User.findAll({ where: { [Op.and]: [{ name: { [Op.iLike]: `%${name}%` } }, { user_activated: true }] } });
+      if (nickname) {
+        const result = await User.findAll({ where: { [Op.and]: [{ nickname: { [Op.iLike]: `%${nickname}%` } }, { user_activated: true }] } });
         if (result.length === 0) {
           return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
         }
