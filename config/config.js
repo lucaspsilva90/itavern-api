@@ -3,7 +3,7 @@ module.exports = {
     username: process.env.DB_USERNAME_DEV,
     password: process.env.DB_PASSWORD_DEV,
     database: process.env.DB_DATABASE_NAME_DEV,
-    host: process.env.DB_DATABASE_HOST_DEV,
+    host: process.env.DATABASE_URL,
     dialect: process.env.DB_DATABASE_DIALECT_DEV,
   },
   test: {
