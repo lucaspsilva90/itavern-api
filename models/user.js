@@ -76,8 +76,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: '../img/imagemPadrao.jpeg',
     },
     user_activated: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
     address_code: {
       type: DataTypes.INTEGER,

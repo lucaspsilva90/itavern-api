@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     date: DataTypes.DATE,
     location: DataTypes.STRING,
-    observations: DataTypes.STRING
+    observations: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'meeting',

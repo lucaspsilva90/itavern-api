@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false
       },
       user_activated: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: false
       },
       address_code: {

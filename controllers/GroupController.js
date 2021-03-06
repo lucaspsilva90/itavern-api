@@ -111,7 +111,7 @@ module.exports = {
         return res.status(404).send({ message: 'Não foi encontrado nenhum grupo com o id fornecido' });
       }
 
-      const verify = await userGroup.findOne({ where: { id: userId } });
+      const verify = await userGroup.findOne({ where: { userId } });
       if (verify) {
         return res.status(400).send({ message: `O usuário ${user.nickname} já faz parte do grupo ${group.name}` });
       }
