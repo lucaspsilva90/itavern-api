@@ -61,7 +61,16 @@ module.exports = {
       return res.status(400).json({ message: error.message });
     }
 
+    if (!userData.password) {
+      return res.status(400).send({ message: 'Por favor forneça uma senha válida.' });
+    }
+
     req.body.password = await brcrypt.hash(req.body.password, 12);
+
+    if (!userData.birthdate) {
+      return res.status(400).send({ message: 'Por favor forneça uma data de nascimento válida.' });
+    }
+
     userService.setBirthDateToISOString(userData, userData.birthdate);
 
     try {
