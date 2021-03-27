@@ -45,7 +45,6 @@ module.exports = {
   store: async (req, res) => {
     const userData = req.body;
     const userParametersValidation = userService.objectParametersValidation(userData);
-    
     if (userParametersValidation.status) {
       const validationErrors = userParametersValidation.errorFields.toString();
       const singularPhrase = `O campo ${validationErrors}, não existe. Por favor, verifique se o parâmetro fornecido está correto.`;
