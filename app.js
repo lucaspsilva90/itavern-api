@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const allowCors = require('./middlewares/cors');
 
 const usersRouter = require('./routes/users');
 const gameRouter = require('./routes/games');
@@ -11,6 +12,7 @@ const app = express();
 
 app.use(logger('dev'));
 app.use(express.json({ type: '*/json' }));
+app.use(allowCors);
 app.use((err, req, res, next) => {
   if (SyntaxError) {
     res.send({ message: 'É nessário enviar um json válido no corpo da requisição.' });
