@@ -311,6 +311,7 @@ $ npm start
 ```
 ### UPDATE POR ID
 * ROTA: [https://itavern-api.herokuapp.com/group/id](https://itavern-api.herokuapp.com/group/id)
+* PARÂMETRO: id
 * MÉTODO HTTP: **GET**
 * PAYLOAD:
 ```json
@@ -330,7 +331,26 @@ $ npm start
 }
 ```
 ### BUSCA POR PARÂMETRO
-* FALTA IMPLEMENTAÇÃO
+* ROTA: [https://itavern-api.herokuapp.com/group/search?id=1](https://itavern-api.herokuapp.com/group)
+* ROTA: [https://itavern-api.herokuapp.com/group/search?name=jablauzeiros](https://itavern-api.herokuapp.com/group?)
+* PARÂMETROS: id ou name
+* MÉTODO HTTP: **GET**
+* RETORNO EXEMPLO:
+```json
+[
+  {
+    "id": 1,
+    "owner_user": 1,
+    "master_id": 1,
+    "name": "Jablauzeiros",
+    "game_id": 1,
+    "max_players": 5,
+    "chat_integration": {},
+    "createdAt": "2021-04-24T22:48:22.885Z",
+    "updatedAt": "2021-04-24T22:48:22.885Z"
+  }
+]
+```
 ### ENTRAR NO GRUPO
 * ROTA: [https://itavern-api.herokuapp.com/group/join](https://itavern-api.herokuapp.com/group/join)
 * MÉTODO HTTP: **POST**
@@ -348,9 +368,24 @@ $ npm start
 }
 ```
 ### SAIR DO GRUPO
-* FALTA IMPLEMENTAÇÃO
+* ROTA: [https://itavern-api.herokuapp.com/group/leave](https://itavern-api.herokuapp.com/group/leave)
+* MÉTODO HTTP: **POST**
+* PAYLOAD:
+```json
+{
+	"userId": "NUMBER",
+	"groupId": "NUMBER",
+}
+```
+* RETORNO EXEMPLO:
+```json
+{
+  "message": "O usuario STRING saiu do grupo STRING com sucesso."
+}
+```
 ### DELETE
 * ROTA: [https://itavern-api.herokuapp.com/group/id](https://itavern-api.herokuapp.com/group/id)
+* PARÂMETRO: id
 * MÉTODO HTTP: **DELETE**
 * RETORNO EXEMPLO:
 ```json
@@ -367,4 +402,74 @@ $ npm start
 }
 ```
 ## Rota de Encontros
-* Falta implementação
+### CRIAR
+* ROTA: [https://itavern-api.herokuapp.com/meeting](https://itavern-api.herokuapp.com/meeting)
+* MÉTODO HTTP: **POST**
+* PAYLOAD:
+```json
+{
+	"group_id": "NUMBER",
+	"name": "STRING",
+	"date": "STRING: YYYY-MM-DD",
+	"location": "STRING",
+	"observations": "STRING"
+}
+```
+* RETORNO EXEMPLO: 
+```json
+{
+  "id": 1,
+  "group_id": 1,
+  "name": "Encontro Manhoso",
+  "date": "2021-04-20T00:00:00.000Z",
+  "location": "Habbibs",
+  "observations": "Levar grana pra esfiha",
+  "updatedAt": "2021-04-24T22:46:04.030Z",
+  "createdAt": "2021-04-24T22:46:04.030Z"
+}
+```
+### LISTAR
+* ROTA: [https://itavern-api.herokuapp.com/meeting](https://itavern-api.herokuapp.com/meeting)
+* MÉTODO HTTP: **GET**
+* RETORNO EXEMPLO: 
+```json
+{
+  "id": 1,
+  "group_id": 1,
+  "name": "Encontro Manhoso",
+  "date": "2021-04-20T00:00:00.000Z",
+  "location": "Habbibs",
+  "observations": "Levar grana pra esfiha"
+}
+```
+### UPDATE POR ID
+* ROTA: [https://itavern-api.herokuapp.com/meeting/id](https://itavern-api.herokuapp.com/meeting)
+* PARÂMETRO: id
+* MÉTODO HTTP: **PUT**
+* PAYLOAD: 
+```json
+{
+	"group_id": "NUMBER",
+	"name": "STRING",
+	"date": "STRING: YYYY-MM-DD",
+	"location": "STRING",
+	"observations": "STRING"
+}
+```
+* RETORNO EXEMPLO: 
+
+Alterando apenas o nome:
+
+```json
+{
+  "message": "A reunião de id: 1 teve as seguintes alterações:",
+  "changes": {
+    "name": "Encontro Blaasd"
+  }
+}
+```
+### DELETAR
+* ROTA: [https://itavern-api.herokuapp.com/meeting/id](https://itavern-api.herokuapp.com/meeting)
+* PARÂMETRO: id
+* MÉTODO HTTP: **DELETE**
+* RETORNO EXEMPLO: STATUS 200

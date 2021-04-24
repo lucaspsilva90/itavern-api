@@ -64,7 +64,7 @@ module.exports = {
       if (name) {
         const result = await Group.findAll({ where: { name: { [Op.iLike]: `%${name}%` } } });
         if (result.length === 0) {
-          return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
+          return res.status(400).send({ message: 'Não foi encontrado nenhum grupo com o parâmetro fornecido' });
         }
         return res.status(200).send(result);
       }
@@ -72,7 +72,7 @@ module.exports = {
       if (id) {
         const result = await Group.findAll({ where: { id } });
         if (result.length === 0) {
-          return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
+          return res.status(400).send({ message: 'Não foi encontrado nenhum grupo com o parâmetro fornecido' });
         }
         return res.status(200).send(result);
       }
