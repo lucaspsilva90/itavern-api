@@ -31,28 +31,165 @@ $ npm start
 * @lmioki
 # DOCUMENTAÇÃO
 ## Rota de Usuários
-### LISTAR
+### CRIAR
 * ROTA: [https://itavern-api.herokuapp.com/users](https://itavern-api.herokuapp.com/users)
-* MÉTODO HTTP: **GET**
+* MÉTODO HTTP: **POST**
 * PAYLOAD: 
 ```json
 {
-	"user_activated": 1,
-	"name": "Iriss",
-	"address":"Rua Jablauski",
-	"birthdate": "1990-03-31",
-	"email": "jabalau@hotmail.com",
-	"password":"teste",
-	"nickname":"izima",
-	"address_code": "04822102",
-	"complement": "casa rosa",
-	"district": "São Paulo",
-	"city": "São Paulo",
-	"state": "SP"
+	"name": "STRING",
+	"address": "STRING",
+	"birthdate": "STRING: YYYY-MM-DD",
+	"email": "STRING",
+	"password":"STRING",
+	"nickname":"STRING",
+	"address_code": "STRING",
+	"complement": "STRING",
+	"district": "STRING",
+	"city": "STRING",
+	"state": "STRING"
 }
 ```
+* RETORNO EXEMPLO:
 
-### CRIAR
-### DELETAR
+```json
+  {
+    "id": 2,
+    "user_type": 1,
+    "name": "Iriss",
+    "birthdate": "1990-03-31",
+    "email": "asdsdsdasds@hotmail.com",
+    "nickname": "izima",
+    "img_url": "../img/imagemPadrao.jpeg",
+    "user_activated": false,
+    "address_code": 4822102,
+    "address": "Rua Jablauski",
+    "number": "13",
+    "complement": "casa rosa",
+    "district": "São Paulo",
+    "city": "São Paulo",
+    "state": "SP",
+    "createdAt": "2021-04-24T15:50:14.574Z",
+    "updatedAt": "2021-04-24T15:50:14.574Z"
+  }
+```
+### LISTAR
+* ROTA: [https://itavern-api.herokuapp.com/users](https://itavern-api.herokuapp.com/users)
+* MÉTODO HTTP: **GET**
+* RETORNO EXEMPLO: 
+```json
+[
+  {
+    "id": 1,
+    "user_type": 1,
+    "name": "Iriss",
+    "birthdate": "1990-03-31",
+    "email": "asdsdsdasd@hotmail.com",
+    "nickname": "izima",
+    "img_url": "../img/imagemPadrao.jpeg",
+    "user_activated": false,
+    "address_code": 4822102,
+    "address": "Rua Jablauski",
+    "number": null,
+    "complement": "casa rosa",
+    "district": "São Paulo",
+    "city": "São Paulo",
+    "state": "SP",
+    "createdAt": "2021-04-24T15:49:39.482Z",
+    "updatedAt": "2021-04-24T15:49:39.482Z"
+  },
+  {
+    "id": 2,
+    "user_type": 1,
+    "name": "Iriss",
+    "birthdate": "1990-03-31",
+    "email": "asdsdsdasds@hotmail.com",
+    "nickname": "izima",
+    "img_url": "../img/imagemPadrao.jpeg",
+    "user_activated": false,
+    "address_code": 4822102,
+    "address": "Rua Jablauski",
+    "number": "13",
+    "complement": "casa rosa",
+    "district": "São Paulo",
+    "city": "São Paulo",
+    "state": "SP",
+    "createdAt": "2021-04-24T15:50:14.574Z",
+    "updatedAt": "2021-04-24T15:50:14.574Z"
+  }
+]
+```
 ### UPDATE POR ID
+* ROTA: [https://itavern-api.herokuapp.com/users/id](https://itavern-api.herokuapp.com/users)
+* PARÂMETRO: id
+* MÉTODO HTTP: **PUT**
+* PAYLOAD:
+```json
+{
+	"name": "STRING"
+}
+```
+* RETORNO EXEMPLO:
+```json
+{
+  "message": "O usuário de id: 2 teve as seguintes alterações:",
+  "changes": {
+    "user_activated": 1
+  }
+}
+```
 ### BUSCA POR PARÂMETROS
+* ROTA: [https://itavern-api.herokuapp.com/users/search?email=asdsdsdas](https://itavern-api.herokuapp.com/users)
+* ROTA: [https://itavern-api.herokuapp.com/users/search?nickname=izima](https://itavern-api.herokuapp.com/users)
+* PARÂMETROS: email ou nickname
+* MÉTODO HTTP: **GET**
+* RETORNO EXEMPLO: 
+```json
+  {
+    "id": 2,
+    "user_type": 1,
+    "name": "Iriss",
+    "birthdate": "1990-03-31",
+    "email": "asdsdsdasds@hotmail.com",
+    "password": "$2b$12$GUrCW/KNrK8h18V.dk7lcex9eKN79bP23M8soP.4RhkaIUw8ZrSZW",
+    "nickname": "izima",
+    "img_url": "../img/imagemPadrao.jpeg",
+    "user_activated": true,
+    "address_code": 4822102,
+    "address": "Rua Jablauski",
+    "number": "13",
+    "complement": "casa rosa",
+    "district": "São Paulo",
+    "city": "São Paulo",
+    "state": "SP",
+    "createdAt": "2021-04-24T15:50:14.574Z",
+    "updatedAt": "2021-04-24T16:07:19.788Z"
+  }
+```
+### DELETAR
+* ROTA: [https://itavern-api.herokuapp.com/users/id](https://itavern-api.herokuapp.com/users)
+* PARÂMETRO: id
+* MÉTODO HTTP: **DELETE**
+* RETORNO: 
+```json
+{
+  "id": 4,
+  "user_type": 1,
+  "name": "Iriss",
+  "birthdate": "1990-03-31",
+  "email": "asdsdsdasd@hotmail.com",
+  "password": "$2b$12$Ybs2kI16JcEITgynEkjN4.vU6/IKnU1S28Aq0UKY2KBNzWw.5OBhK",
+  "nickname": "izima",
+  "img_url": "../img/imagemPadrao.jpeg",
+  "user_activated": false,
+  "address_code": 4822102,
+  "address": "Rua Jablauski",
+  "number": null,
+  "complement": "casa rosa",
+  "district": "São Paulo",
+  "city": "São Paulo",
+  "state": "SP",
+  "createdAt": "2021-04-24T15:40:55.212Z",
+  "updatedAt": "2021-04-24T15:40:55.212Z"
+}
+```
