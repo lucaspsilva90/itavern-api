@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const {
   Group, Games, User, userGroup,
 } = require('../models');
@@ -5,7 +6,6 @@ const {
 const groupService = require('../utils/groupService');
 
 module.exports = {
-
   store: async (req, res) => {
     const group = req.body;
     const { owner_user } = req.body;
@@ -56,6 +56,29 @@ module.exports = {
     }
   },
   searchGroupByParam: async (req, res) => {
+    const { name, id } = req.query;
+    if (!name && !id) {
+      return res.status(400).send({ message: 'Por favor forneça um nome ou id válido' });
+    }
+    try {
+      if (name) {
+        const result = await Group.findAll({ where: { name: { [Op.iLike]: `%${name}%` } } });
+        if (result.length === 0) {
+          return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
+        }
+        return res.status(200).send(result);
+      }
+
+      if (id) {
+        const result = await Group.findAll({ where: { id } });
+        if (result.length === 0) {
+          return res.status(400).send({ message: 'Não foi encontrado nenhum usuario com o parâmetro fornecido' });
+        }
+        return res.status(200).send(result);
+      }
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
   },
   updateById: async (req, res) => {
     const { id } = req.params;
@@ -113,7 +136,7 @@ module.exports = {
         return res.status(404).send({ message: 'Não foi encontrado nenhum grupo com o id fornecido' });
       }
 
-      const verify = await userGroup.findOne({ where: { userId } });
+      const verify = await userGroup.findOne({ where: { [Op.and]: [{ userId }, { groupId }] } });
       if (verify) {
         return res.status(400).send({ message: `O usuário ${user.nickname} já faz parte do grupo ${group.name}` });
       }
@@ -129,5 +152,34 @@ module.exports = {
     }
   },
   leaveGroup: async (req, res) => {
+    const { userId, groupId } = req.body;
+    try {
+      const user = await User.findOne({ where: { id: userId } });
+      if (!user) {
+        return res.status(404).send({ message: 'Não foi encontrado nenhum usuário com o id fornecido' });
+      }
+
+      const group = await Group.findOne({ where: { id: groupId } });
+      if (!group) {
+        return res.status(404).send({ message: 'Não foi encontrado nenhum grupo com o id fornecido' });
+      }
+
+      const verify = await userGroup.findOne({ where: { [Op.and]: [{ userId }, { groupId }] } });
+      if (!verify) {
+        return res.status(400).send({ message: `O usuário ${user.nickname} já não faz parte do grupo ${group.name}` });
+      }
+
+      const data = {
+        userId,
+        groupId,
+      };
+      await userGroup.destroy({
+        where:
+          { [Op.and]: [{ userId: data.userId }, { groupId: data.groupId }] },
+      });
+      return res.send({ message: `O usuario ${user.nickname} saiu do grupo ${group.name} com sucesso.` });
+    } catch (error) {
+      return res.status(400).send({ message: error.message });
+    }
   },
 };

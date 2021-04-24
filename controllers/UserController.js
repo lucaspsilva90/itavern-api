@@ -18,7 +18,7 @@ module.exports = {
     const { nickname, email } = req.query;
 
     if (!nickname && !email) {
-      return res.status(400).send({ message: 'Por favor forneça um nome ou email válido' });
+      return res.status(400).send({ message: 'Por favor forneça um apelido ou email válido' });
     }
 
     try {
@@ -130,7 +130,21 @@ module.exports = {
   },
 
   userActivate: async (req, res) => {
-
+    const { id } = req.params;
+    try {
+      const user = await User.findByPk(id);
+      if (!user) {
+        return res.status(400).send({ message: `Usuário de id ${id} não foi encontrado.` });
+      }
+    } catch (error) {
+      return res.json({ message: error.message });
+    }
+    try {
+      await User.update({ user_activated: true }, { where: { id } });
+      return res.status(200).send({ message: `O usuário de id: ${id} foi ativado` });
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
   },
 
 };

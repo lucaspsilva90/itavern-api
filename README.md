@@ -4,7 +4,6 @@
 * Encontro de jogadores/grupos por proximidade.
 * Encontro de jogadores/grupos de acordo com características definidas.
 * Portfólio de suas últimas aventuras.
-
 # Stack
 * Backend
     * [NodeJs](https://nodejs.org/en/)
