@@ -1,6 +1,5 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
@@ -14,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     game_id: {
       type: DataTypes.INTEGER,
-      validate:{
+      validate: {
         isInt: true,
       },
     },

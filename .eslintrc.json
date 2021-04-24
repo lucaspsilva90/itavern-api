@@ -12,11 +12,6 @@
     },
     "rules": {
         "linebreak-style": 0,
-        "camelcase": [
-            "error",
-            {
-                "ignoreDestructuring": true
-            }
-        ]
+        "camelcase": [2]
     }
 }
