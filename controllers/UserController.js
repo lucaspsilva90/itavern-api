@@ -129,4 +129,8 @@ module.exports = {
     }
   },
 
+  userActivate: async (req, res) => {
+
+  },
+
 };

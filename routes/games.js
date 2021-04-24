@@ -5,6 +5,6 @@ const GameController = require('../controllers/GameController');
 router.get('/', GameController.list);
 router.post('/', GameController.store);
 router.delete('/:id', GameController.delete);
-router.patch('/:id', GameController.updateById);
+router.put('/:id', GameController.updateById);
 
 module.exports = router;

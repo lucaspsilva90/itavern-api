@@ -46,7 +46,7 @@ module.exports = {
         {
           model: User,
           as: 'Users',
-          attributes: ['name', 'nickname', 'img_url'],
+          attributes: ['id', 'name', 'nickname', 'img_url'],
         },
         ],
       });
@@ -54,6 +54,8 @@ module.exports = {
     } catch (error) {
       return res.status(400).send({ message: error.message });
     }
+  },
+  searchGroupByParam: async (req, res) => {
   },
   updateById: async (req, res) => {
     const { id } = req.params;
@@ -125,5 +127,7 @@ module.exports = {
     } catch (error) {
       return res.status(400).send({ message: error.message });
     }
+  },
+  leaveGroup: async (req, res) => {
   },
 };
