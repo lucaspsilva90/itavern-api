@@ -83,13 +83,13 @@ module.exports = {
   updateById: async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
-    const userParametersValidation = groupService.objectParametersValidation(changes);
+    const groupParametersValidation = groupService.objectParametersValidation(changes);
 
-    if (userParametersValidation.status) {
-      const validationErrors = userParametersValidation.errorFields.toString();
+    if (groupParametersValidation.status) {
+      const validationErrors = groupParametersValidation.errorFields.toString();
       const singularPhrase = `O campo ${validationErrors}, não existe. Por favor, verifique se o parâmetro fornecido está correto.`;
       const pluralPhrase = `Os campos: ${validationErrors}, não existem. Por favor, verifique se os parâmetros fornecidos estão corretos.`;
-      return res.status(400).send({ message: `${userParametersValidation.errorFields.length > 1 ? pluralPhrase : singularPhrase}` });
+      return res.status(400).send({ message: `${groupParametersValidation.errorFields.length > 1 ? pluralPhrase : singularPhrase}` });
     }
 
     try {
