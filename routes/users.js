@@ -1,13 +1,14 @@
 const express = require('express');
 const UserController = require('../controllers/UserController');
+const authenticationRequired = require('../middlewares/authenticationRequired');
 
 const router = express.Router();
 
-router.get('/', UserController.list);
-router.get('/search', UserController.searchActivatedUsersByParam);
+router.get('/', authenticationRequired, UserController.list);
+router.get('/search', authenticationRequired, UserController.searchActivatedUsersByParam);
 router.post('/', UserController.store);
-router.put('/:id', UserController.updateById);
+router.put('/:id', authenticationRequired, UserController.updateById);
 router.put('/activate/:id', UserController.userActivate);
-router.delete('/:id', UserController.delete);
+router.delete('/:id', authenticationRequired, UserController.delete);
 
 module.exports = router;

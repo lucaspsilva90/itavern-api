@@ -14,6 +14,7 @@ module.exports = {
     }
   },
 
+  // eslint-disable-next-line consistent-return
   searchActivatedUsersByParam: async (req, res) => {
     const { nickname, email } = req.query;
 
