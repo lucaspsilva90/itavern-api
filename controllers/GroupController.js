@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const { Op } = require('sequelize');
 const {
   Group, Games, User, userGroup,
@@ -55,6 +56,7 @@ module.exports = {
       return res.status(400).send({ message: error.message });
     }
   },
+  // eslint-disable-next-line consistent-return
   searchGroupByParam: async (req, res) => {
     const { name, id } = req.query;
     if (!name && !id) {
